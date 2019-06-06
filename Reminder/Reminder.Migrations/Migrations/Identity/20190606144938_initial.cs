@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Reminder.Migrations.Migrations.Identity
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -269,22 +269,24 @@ namespace Reminder.Migrations.Migrations.Identity
                 });
 
             migrationBuilder.CreateTable(
-                name: "AchievementNotes",
+                name: "AchievementSteps",
                 schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ImageContent = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    HoursSpent = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
+                    TimeSpent = table.Column<int>(nullable: false),
+                    TimeEstimation = table.Column<int>(nullable: false),
                     AchievementId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AchievementNotes", x => x.Id);
+                    table.PrimaryKey("PK_AchievementSteps", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AchievementNotes_Achievements_AchievementId",
+                        name: "FK_AchievementSteps_Achievements_AchievementId",
                         column: x => x.AchievementId,
                         principalSchema: "dbo",
                         principalTable: "Achievements",
@@ -293,61 +295,42 @@ namespace Reminder.Migrations.Migrations.Identity
                 });
 
             migrationBuilder.CreateTable(
-                name: "Photos",
+                name: "GalleryItems",
                 schema: "dbo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true),
+                    ImagePath = table.Column<string>(nullable: true),
+                    Thumbnail = table.Column<string>(nullable: true),
+                    IsVideo = table.Column<bool>(nullable: false),
+                    VideoPath = table.Column<string>(nullable: true),
+                    Landscape = table.Column<bool>(nullable: false),
                     NoteId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.PrimaryKey("PK_GalleryItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_Notes_NoteId",
+                        name: "FK_GalleryItems_Notes_NoteId",
                         column: x => x.NoteId,
                         principalSchema: "dbo",
                         principalTable: "Notes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "Videos",
-                schema: "dbo",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Content = table.Column<byte[]>(nullable: true),
-                    NoteId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Videos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Videos_Notes_NoteId",
-                        column: x => x.NoteId,
-                        principalSchema: "dbo",
-                        principalTable: "Notes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AchievementNotes_AchievementId",
-                schema: "dbo",
-                table: "AchievementNotes",
-                column: "AchievementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Achievements_UserId",
                 schema: "dbo",
                 table: "Achievements",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AchievementSteps_AchievementId",
+                schema: "dbo",
+                table: "AchievementSteps",
+                column: "AchievementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -402,34 +385,28 @@ namespace Reminder.Migrations.Migrations.Identity
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GalleryItems_NoteId",
+                schema: "dbo",
+                table: "GalleryItems",
+                column: "NoteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Notes_UserId",
                 schema: "dbo",
                 table: "Notes",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_NoteId",
-                schema: "dbo",
-                table: "Photos",
-                column: "NoteId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ToDoModels_UserId",
                 schema: "dbo",
                 table: "ToDoModels",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Videos_NoteId",
-                schema: "dbo",
-                table: "Videos",
-                column: "NoteId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AchievementNotes",
+                name: "AchievementSteps",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
@@ -457,15 +434,11 @@ namespace Reminder.Migrations.Migrations.Identity
                 schema: "dbo");
 
             migrationBuilder.DropTable(
-                name: "Photos",
+                name: "GalleryItems",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "ToDoModels",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "Videos",
                 schema: "dbo");
 
             migrationBuilder.DropTable(

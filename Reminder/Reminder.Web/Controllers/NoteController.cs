@@ -24,8 +24,7 @@ namespace Reminder.Web.Controllers
             var allNotes = _repository.GetAll().OrderByDescending(x => x.Id).ToList();
             Parallel.ForEach(allNotes, note =>
             {
-                Parallel.ForEach(note.Photos, x => x.Note = null);
-                Parallel.ForEach(note.Videos, x => x.Note = null);
+                Parallel.ForEach(note.GalleryItems, x => x.Note = null);
             });
             return allNotes;
         }
@@ -42,7 +41,7 @@ namespace Reminder.Web.Controllers
             {
                 return NotFound();
             }
-            Parallel.ForEach(note.Photos, photo => { photo.Note = null; });
+            Parallel.ForEach(note.GalleryItems, photo => { photo.Note = null; });
             return Ok(note);
         }
 
@@ -51,14 +50,14 @@ namespace Reminder.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Parallel.ForEach(note.Photos, photo => { photo.Note = note; });
+                Parallel.ForEach(note.GalleryItems, photo => { photo.Note = note; });
 
                 var userId = User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
                 note.UserId = userId;
                 _repository.Create(note);
                 await _repository.SaveAsync();
 
-                Parallel.ForEach(note.Photos, photo => { photo.Note = null; });
+                Parallel.ForEach(note.GalleryItems, photo => { photo.Note = null; });
                 return Ok(note);
             }
             return BadRequest();
@@ -86,8 +85,7 @@ namespace Reminder.Web.Controllers
             }
             await _repository.SaveAsync();
 
-            Parallel.ForEach(result.Photos, x => x.Note = null);
-            Parallel.ForEach(result.Videos, x => x.Note = null);
+            Parallel.ForEach(result.GalleryItems, x => x.Note = null);
             return Ok(result);
         }
     }

@@ -10,14 +10,14 @@ using Reminder.Migrations.Context;
 namespace Reminder.Migrations.Migrations.Identity
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20181123074545_Initial")]
-    partial class Initial
+    [Migration("20190606144938_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -154,7 +154,7 @@ namespace Reminder.Migrations.Migrations.Identity
                     b.ToTable("Achievements","dbo");
                 });
 
-            modelBuilder.Entity("Reminder.Data.Entities.AchievementNote", b =>
+            modelBuilder.Entity("Reminder.Data.Entities.AchievementStep", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -162,17 +162,21 @@ namespace Reminder.Migrations.Migrations.Identity
 
                     b.Property<int>("AchievementId");
 
-                    b.Property<DateTime>("Date");
-
                     b.Property<string>("Description");
 
-                    b.Property<int>("HoursSpent");
+                    b.Property<string>("ImageContent");
+
+                    b.Property<int>("TimeEstimation");
+
+                    b.Property<int>("TimeSpent");
+
+                    b.Property<string>("Title");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AchievementId");
 
-                    b.ToTable("AchievementNotes","dbo");
+                    b.ToTable("AchievementSteps","dbo");
                 });
 
             modelBuilder.Entity("Reminder.Data.Entities.AppUser", b =>
@@ -251,6 +255,31 @@ namespace Reminder.Migrations.Migrations.Identity
                     b.ToTable("Birthdays","dbo");
                 });
 
+            modelBuilder.Entity("Reminder.Data.Entities.GalleryItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ImagePath");
+
+                    b.Property<bool>("IsVideo");
+
+                    b.Property<bool>("Landscape");
+
+                    b.Property<int>("NoteId");
+
+                    b.Property<string>("Thumbnail");
+
+                    b.Property<string>("VideoPath");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NoteId");
+
+                    b.ToTable("GalleryItems","dbo");
+                });
+
             modelBuilder.Entity("Reminder.Data.Entities.Note", b =>
                 {
                     b.Property<int>("Id")
@@ -272,25 +301,6 @@ namespace Reminder.Migrations.Migrations.Identity
                     b.ToTable("Notes","dbo");
                 });
 
-            modelBuilder.Entity("Reminder.Data.Entities.PhotoModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Image");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("NoteId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NoteId");
-
-                    b.ToTable("Photos","dbo");
-                });
-
             modelBuilder.Entity("Reminder.Data.Entities.ToDoModel", b =>
                 {
                     b.Property<int>("Id")
@@ -310,23 +320,6 @@ namespace Reminder.Migrations.Migrations.Identity
                     b.HasIndex("UserId");
 
                     b.ToTable("ToDoModels","dbo");
-                });
-
-            modelBuilder.Entity("Reminder.Data.Entities.VideoModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Content");
-
-                    b.Property<int>("NoteId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NoteId");
-
-                    b.ToTable("Videos","dbo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -381,10 +374,10 @@ namespace Reminder.Migrations.Migrations.Identity
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Reminder.Data.Entities.AchievementNote", b =>
+            modelBuilder.Entity("Reminder.Data.Entities.AchievementStep", b =>
                 {
                     b.HasOne("Reminder.Data.Entities.AchievementModel", "Achievement")
-                        .WithMany("AchievementNotes")
+                        .WithMany("AchievementSteps")
                         .HasForeignKey("AchievementId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -396,6 +389,14 @@ namespace Reminder.Migrations.Migrations.Identity
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Reminder.Data.Entities.GalleryItemModel", b =>
+                {
+                    b.HasOne("Reminder.Data.Entities.Note", "Note")
+                        .WithMany("GalleryItems")
+                        .HasForeignKey("NoteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Reminder.Data.Entities.Note", b =>
                 {
                     b.HasOne("Reminder.Data.Entities.AppUser", "User")
@@ -403,27 +404,11 @@ namespace Reminder.Migrations.Migrations.Identity
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Reminder.Data.Entities.PhotoModel", b =>
-                {
-                    b.HasOne("Reminder.Data.Entities.Note", "Note")
-                        .WithMany("Photos")
-                        .HasForeignKey("NoteId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Reminder.Data.Entities.ToDoModel", b =>
                 {
                     b.HasOne("Reminder.Data.Entities.AppUser", "User")
                         .WithMany("ToDoModels")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Reminder.Data.Entities.VideoModel", b =>
-                {
-                    b.HasOne("Reminder.Data.Entities.Note", "Note")
-                        .WithMany("Videos")
-                        .HasForeignKey("NoteId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

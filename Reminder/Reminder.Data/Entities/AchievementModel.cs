@@ -7,7 +7,7 @@ namespace Reminder.Data.Entities
     {
         public AchievementModel()
         {
-            AchievementNotes = new List<AchievementNote>();
+            AchievementSteps = new List<AchievementStep>();
         }
 
         public string ImageContent { get; set; }
@@ -18,6 +18,6 @@ namespace Reminder.Data.Entities
         public string UserId { get; set; }
         public AppUser User { get; set; }
 
-        public ICollection<AchievementNote> AchievementNotes { get; set; }
+        public ICollection<AchievementStep> AchievementSteps { get; set; }
     }
 }

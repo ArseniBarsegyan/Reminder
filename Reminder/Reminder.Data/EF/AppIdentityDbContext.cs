@@ -36,12 +36,11 @@ namespace Reminder.Data.EF
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<AchievementModel>("Achievements", SchemaName));
-            modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<AchievementNote>("AchievementNotes", SchemaName));
+            modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<AchievementStep>("AchievementSteps", SchemaName));
             modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<BirthdayModel>("Birthdays", SchemaName));
+            modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<GalleryItemModel>("GalleryItems", SchemaName));
             modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<Note>("Notes", SchemaName));
-            modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<PhotoModel>("Photos", SchemaName));
             modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<ToDoModel>("ToDoModels", SchemaName));
-            modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<VideoModel>("Videos", SchemaName));
             modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<AppUser>("AspNetUsers", SchemaName));
             modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<IdentityRole>("AspNetRoles", SchemaName));
             modelBuilder.ApplyConfiguration(new AppIdentityTypeConfiguration<IdentityUserClaim<string>>("AspNetUserClaims", SchemaName));
