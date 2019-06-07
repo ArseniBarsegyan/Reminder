@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { NotesService } from '../notes.service';
 import { Router } from '@angular/router';
-import { Photo } from '../photo';
-import { Note } from '../note';
+import { GalleryItemModel } from '../GalleryItemModel';
+import { NoteModel } from '../NoteModel';
 
 @Component({
   selector: 'app-create-note',
@@ -47,10 +47,12 @@ export class CreateNoteComponent implements OnInit {
   }
 
   onSubmit(createComponentForm: NgForm) {
-    const note = new Note(0, createComponentForm.controls['description'].value, new Date());
-    const photo = new Photo(0, createComponentForm.controls['file'].value['filename'],
-      0, createComponentForm.controls['file'].value['value']);
-    note.photos = [photo];
+    const note = new NoteModel(0, createComponentForm.controls['description'].value, new Date(), new Date());
+    const galleryItem = new GalleryItemModel(0, createComponentForm.controls['file'].value['filename'],
+    createComponentForm.controls['file'].value['filename'], false,
+      createComponentForm.controls['file'].value['value'],
+      false, 0);
+      note.galleryItems = [galleryItem];
 
     this.notesService.createNote(note);
     this.router.navigate(['notes']);

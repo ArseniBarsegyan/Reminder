@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Note } from '../note';
+import { NoteModel } from '../NoteModel';
 import { NotesService } from '../notes.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { AuthService } from '../../auth/auth.service';
   styleUrls: ['./notes-list.component.css']
 })
 export class NotesListComponent implements OnInit, OnDestroy {
-  notes: Note[];
+  notes: NoteModel[];
   subscription: Subscription;
 
   constructor(private notesService: NotesService,
@@ -23,7 +23,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.notesService.getNotes();
     this.subscription = this.notesService.notesChanged
-      .subscribe((notes: Note[]) => {
+      .subscribe((notes: NoteModel[]) => {
         this.notes = notes;
       });
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotesService } from '../notes.service';
 import { ActivatedRoute } from '@angular/router';
-import { Note } from '../note';
+import { NoteModel } from '../NoteModel';
 
 @Component({
   selector: 'app-note-details',
@@ -9,7 +9,7 @@ import { Note } from '../note';
   styleUrls: ['./note-details.component.css']
 })
 export class NoteDetailsComponent implements OnInit {
-  note: Note;
+  note: NoteModel;
   id: number;
 
   constructor(private route: ActivatedRoute, private notesService: NotesService) {
